@@ -1,512 +1,362 @@
 import React, { useState } from 'react';
-import { FileText, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { FileText, Download, Users, Target, Settings, Database, GitBranch, BookOpen, CheckCircle } from 'lucide-react';
 
 const StudentExchangeSystemPDF = () => {
-  const [expandedSections, setExpandedSections] = useState({
-    stakeholders: true,
-    goals: true,
-    requirements: false,
-    nonFunctional: false,
-    businessRules: false,
-    entities: false,
-    relationships: false,
-    scenarios: false
-  });
-
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
+  const handleDownload = () => {
+    window.print();
   };
 
-  const Section = ({ id, title, children }) => (
-    <div className="mb-6 border border-gray-300 rounded-lg overflow-hidden bg-white">
-      <button
-        onClick={() => toggleSection(id)}
-        className="w-full px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 flex justify-between items-center hover:from-blue-100 hover:to-indigo-100 transition-colors"
-      >
-        <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-        {expandedSections[id] ? <ChevronUp /> : <ChevronDown />}
-      </button>
-      {expandedSections[id] && (
-        <div className="px-6 py-4">
-          {children}
-        </div>
-      )}
-    </div>
-  );
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-t-4 border-blue-600">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <FileText className="w-10 h-10 text-blue-600" />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">Öğrenci Takas Sistemi</h1>
-                <p className="text-gray-600 mt-1">Gereksinim Analizi ve Kavramsal Tasarım</p>
-              </div>
-            </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              <Download className="w-5 h-5" />
-              PDF İndir
-            </button>
+    <div className="min-h-screen bg-white">
+      {/* Print Styles */}
+      <style>{`
+        @media print {
+          body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+          .no-print { display: none !important; }
+          .page-break { page-break-before: always; }
+        }
+      `}</style>
+
+      {/* Header with Download Button */}
+      <div className="no-print fixed top-4 right-4 z-50">
+        <button 
+          onClick={handleDownload}
+          className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-all"
+        >
+          <Download className="w-5 h-5" />
+          PDF İndir
+        </button>
+      </div>
+
+      <div className="max-w-5xl mx-auto p-12">
+        
+        {/* Cover Page */}
+        <div className="text-center mb-16 pb-16 border-b-4 border-blue-600">
+          <div className="mb-8">
+            <FileText className="w-24 h-24 mx-auto text-blue-600 mb-4" />
           </div>
-          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-            <p className="text-sm text-gray-700"><strong>Özet:</strong> Bu doküman bir öğrenci takas sistemi için kapsamlı gereksinim analizi, iş kuralları, kavramsal veri modeli ve kullanıcı senaryolarını içerir.</p>
-            <p className="text-sm text-gray-700 mt-2"><strong>Amaç:</strong> Kullanıcı yönetimi, beceri eşleştirme, proje yönetimi, mentorluk, mesajlaşma ve değerlendirme sistemlerini kapsayan bir bilgi takas platformu için başlangıç modelini sağlamaktır.</p>
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">Öğrenci Takas Sistemi</h1>
+          <h2 className="text-2xl text-gray-600 mb-8">Gereksinim Analizi ve Kavramsal Tasarım</h2>
+          
+          <div className="bg-blue-50 rounded-lg p-8 text-left max-w-3xl mx-auto mt-12">
+            <h3 className="font-bold text-lg mb-3 text-blue-900">Özet</h3>
+            <p className="text-gray-700 mb-4 leading-relaxed">
+              Bu doküman bir öğrenci takas sistemi için kapsamlı gereksinim analizi, iş kuralları, 
+              kavramsal veri modeli ve kullanıcı senaryolarını içerir.
+            </p>
+            <h3 className="font-bold text-lg mb-3 text-blue-900">Amaç</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Kullanıcı yönetimi, beceri eşleştirme, proje yönetimi, mentorluk, mesajlaşma ve 
+              değerlendirme sistemlerini kapsayan bir bilgi takas platformu için başlangıç modelini sağlamaktır.
+            </p>
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-gray-300">
+            <p className="text-sm text-gray-600 mb-2">Proje Ekibi</p>
+            <p className="text-gray-800 font-semibold">
+              Emircan Can • Melike Yetmen • Muhammet Temel • Pelin Ateş
+            </p>
+            <p className="text-sm text-gray-500 mt-4">2025</p>
+          </div>
+        </div>
+
+        {/* Table of Contents */}
+        <div className="mb-16 page-break">
+          <h2 className="text-3xl font-bold mb-8 text-gray-900 border-b-2 border-blue-600 pb-3">İçindekiler</h2>
+          <div className="space-y-3 text-lg">
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>1. Paydaşlar</span>
+              <span className="text-gray-500">3</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>2. Amaçlar ve Kapsam</span>
+              <span className="text-gray-500">4</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>3. Sorun Tanımı</span>
+              <span className="text-gray-500">5</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>4. İşlevsel Gereksinimler</span>
+              <span className="text-gray-500">6</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>5. Fonksiyonel Olmayan Gereksinimler</span>
+              <span className="text-gray-500">8</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>6. İş Kuralları</span>
+              <span className="text-gray-500">9</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>7. Kavramsal Varlık Listesi</span>
+              <span className="text-gray-500">10</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>8. İlişkiler ve Kardinaliteler</span>
+              <span className="text-gray-500">12</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>9. Kavramsal ER Diyagram</span>
+              <span className="text-gray-500">13</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>10. Kullanıcı Senaryoları</span>
+              <span className="text-gray-500">14</span>
+            </div>
           </div>
         </div>
 
         {/* 1. Paydaşlar */}
-        <Section id="stakeholders" title="1. Paydaşlar">
-          <ul className="space-y-2 text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Proje Geliştiriciler:</strong> Sistem geliştirme ve bakım ekibi</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Proje Yöneticisi:</strong> Proje koordinasyonu ve yönetimi</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Kullanıcılar (Öğrenciler):</strong> Beceri takası ve proje iş birliği yapan bireyler</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Mentorlar:</strong> Deneyim ve bilgi paylaşan kullanıcılar</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Denetçiler:</strong> Sistem güvenliği ve etik uyumluluk kontrolü</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-blue-600 font-bold">•</span>
-              <span><strong>Üniversite Kurumları:</strong> Akademik destek ve iş birliği</span>
-            </li>
-          </ul>
-        </Section>
+        <div className="mb-16 page-break">
+          <div className="flex items-center gap-3 mb-6">
+            <Users className="w-8 h-8 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">1. Paydaşlar</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-600">
+              <h3 className="font-bold text-blue-900 mb-2">Proje Geliştiriciler</h3>
+              <p className="text-gray-700 text-sm">Sistem geliştirme ve bakım ekibi</p>
+            </div>
+            <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-600">
+              <h3 className="font-bold text-blue-900 mb-2">Proje Yöneticisi</h3>
+              <p className="text-gray-700 text-sm">Proje koordinasyonu ve yönetimi</p>
+            </div>
+            <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-600">
+              <h3 className="font-bold text-green-900 mb-2">Kullanıcılar (Öğrenciler)</h3>
+              <p className="text-gray-700 text-sm">Beceri takası ve proje iş birliği yapan bireyler</p>
+            </div>
+            <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-600">
+              <h3 className="font-bold text-green-900 mb-2">Mentorlar</h3>
+              <p className="text-gray-700 text-sm">Deneyim ve bilgi paylaşan kullanıcılar</p>
+            </div>
+            <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-600">
+              <h3 className="font-bold text-purple-900 mb-2">Denetçiler</h3>
+              <p className="text-gray-700 text-sm">Sistem güvenliği ve etik uyumluluk kontrolü</p>
+            </div>
+            <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-600">
+              <h3 className="font-bold text-purple-900 mb-2">Üniversite Kurumları</h3>
+              <p className="text-gray-700 text-sm">Akademik destek ve iş birliği</p>
+            </div>
+          </div>
+        </div>
 
         {/* 2. Amaçlar ve Kapsam */}
-        <Section id="goals" title="2. Amaçlar ve Kapsam">
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-bold text-gray-800 mb-2">Ana Amaç:</h3>
+        <div className="mb-16 page-break">
+          <div className="flex items-center gap-3 mb-6">
+            <Target className="w-8 h-8 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">2. Amaçlar ve Kapsam</h2>
+          </div>
+          
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-lg mb-8">
+            <h3 className="font-bold text-xl mb-4 text-blue-900">Ana Amaç</h3>
+            <p className="text-gray-800 leading-relaxed">
+              Kullanıcıların kişisel ve akademik gelişim süreçlerini desteklemek üzere karşılıklı 
+              bilgi ve deneyim paylaşımına dayalı bir öğrenme ortamı oluşturmak. Kullanıcılar, sahip 
+              oldukları uzmanlık veya yetkinlik alanlarını, kendi gelişimlerini hedefledikleri farklı 
+              bir uzmanlık alanında bilgi edinmek amacıyla bir değişim aracı olarak kullanacaklardır.
+            </p>
+          </div>
+
+          <h3 className="font-bold text-xl mb-4 text-gray-900">Kapsam</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Kullanıcı kayıt ve profil yönetimi</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Beceri eşleştirme ve takas sistemi</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Proje oluşturma ve ekip arama</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Mentorluk sistemi</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Mesajlaşma ve görüşme yönetimi</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Değerlendirme ve geri bildirim</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">Proje dokümanı paylaşımı</span>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
+              <span className="text-gray-700">İlerleme takibi ve rozet sistemi</span>
+            </div>
+          </div>
+
+          <div className="mt-8 bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded">
+            <h3 className="font-bold text-lg mb-2 text-yellow-900">Hedef Kitle</h3>
+            <p className="text-gray-700 leading-relaxed">
+              Bilgi ve beceri paylaşımına açık, hedeflediği alanlarda gelişmek/uzmanlaşmak isteyen, 
+              proje için ekip arkadaşları arayan veya bir projenin parçası olmak isteyen geniş bir 
+              kullanıcı kitlesiyle birlikte özellikle üniversite öğrencileri üzerine odaklanmaktadır.
+            </p>
+          </div>
+        </div>
+
+        {/* 3. Sorun Tanımı */}
+        <div className="mb-16 page-break">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-600 pb-3">3. Sorun Tanımı</h2>
+          
+          <div className="space-y-6">
+            <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded">
+              <h3 className="font-bold text-red-900 mb-3">Mevcut Durum</h3>
               <p className="text-gray-700 leading-relaxed">
-                Kullanıcıların kişisel ve akademik gelişim süreçlerini desteklemek üzere karşılıklı bilgi ve deneyim paylaşımına dayalı bir öğrenme ortamı oluşturmak. Kullanıcılar, sahip oldukları uzmanlık veya yetkinlik alanlarını, kendi gelişimlerini hedefledikleri farklı bir uzmanlık alanında bilgi edinmek amacıyla bir değişim aracı olarak kullanacaklardır.
+                Günümüzde öğrenciler, üniversite hayatı boyunca yalnızca kendi bölümlerindeki derslerle 
+                sınırlı kalmamakta, farklı alanlarda da bilgi ve beceri edinme isteğinde bulunurlar. 
+                Ancak bu istek çoğu zaman ek kurslar, ücretli eğitimler veya bireysel çabalarla 
+                karşılanmaya çalışılmaktadır.
               </p>
             </div>
-            <div>
-              <h3 className="font-bold text-gray-800 mb-2">Kapsam:</h3>
+
+            <div className="bg-orange-50 border-l-4 border-orange-500 p-6 rounded">
+              <h3 className="font-bold text-orange-900 mb-3">Sorunlar</h3>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Kullanıcı kayıt ve profil yönetimi (beceriler, hedefler, deneyimler)</span>
+                  <span className="text-orange-600 font-bold">•</span>
+                  <span>Maddi imkânları sınırlı olan öğrenciler için erişim sorunları</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Beceri eşleştirme ve takas sistemi</span>
+                  <span className="text-orange-600 font-bold">•</span>
+                  <span>Proje bazlı çalışmalarda ekip arkadaşı bulmakta zorluk</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Proje oluşturma ve ekip arkadaşı arama ilanları</span>
+                  <span className="text-orange-600 font-bold">•</span>
+                  <span>Farklı disiplinlerden bireylerle ortak çalışma ortamı eksikliği</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Mentorluk sistemi ve bire bir eğitim seansları</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Mesajlaşma ve görüşme yönetimi</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Değerlendirme ve geri bildirim sistemi</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>Proje dokümanı ve kaynak paylaşımı</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-indigo-600 font-bold">→</span>
-                  <span>İlerleme takibi ve başarı rozeti sistemi</span>
+                  <span className="text-orange-600 font-bold">•</span>
+                  <span>İş hayatına hazırlık konusunda yetersiz pratik deneyim</span>
                 </li>
               </ul>
             </div>
-            <div className="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded">
-              <h3 className="font-bold text-gray-800 mb-2">Hedef Kitle:</h3>
-              <p className="text-gray-700">
-                Bilgi ve beceri paylaşımına açık, hedeflediği alanlarda gelişmek/uzmanlaşmak isteyen, proje için ekip arkadaşları arayan veya bir projenin parçası olmak isteyen geniş bir kullanıcı kitlesiyle birlikte özellikle üniversite öğrencileri üzerine odaklanmaktadır.
+
+            <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded">
+              <h3 className="font-bold text-green-900 mb-3">Çözüm</h3>
+              <p className="text-gray-700 leading-relaxed">
+                Öğrencilerin becerilerini paylaşabilecekleri, eksik oldukları veya istedikleri 
+                alanlarda destek alabilecekleri ve proje tabanlı ekip çalışmalarına katılabilecekleri, 
+                çevrimiçi ve erişilebilir bir platform.
               </p>
             </div>
           </div>
-        </Section>
+        </div>
 
-        {/* 3. İşlevsel Gereksinimler */}
-        <Section id="requirements" title="3. İşlevsel Gereksinimler">
-          <div className="space-y-3">
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Kullanıcı Kayıtları:</strong>
-              <span className="text-gray-700"> CRUD işlemleri, profil bilgileri (isim, yaş, bölüm, beceriler, hedefler, deneyim), kimlik doğrulama.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Beceri Yönetimi:</strong>
-              <span className="text-gray-700"> Kullanıcıların sahip oldukları ve öğrenmek istedikleri becerileri tanımlama, beceri seviyesi belirleme, beceri kategorileri.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Eşleştirme Algoritması:</strong>
-              <span className="text-gray-700"> Kullanıcıların sahip oldukları ve istedikleri beceriler bazında otomatik eşleştirme, uyumluluk skoru hesaplama.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Proje İlanları:</strong>
-              <span className="text-gray-700"> Proje oluşturma, ekip arkadaşı arama, gereken beceriler tanımlama, başvuru kabul/red sistemi.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Mentorluk Sistemi:</strong>
-              <span className="text-gray-700"> Mentor-öğrenci eşleştirme, mentorluk seansları planlama, seans geçmişi takibi.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Mesajlaşma:</strong>
-              <span className="text-gray-700"> Kullanıcılar arası mesajlaşma, grup mesajları (proje ekipleri için), bildirim sistemi.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Görüşme Yönetimi:</strong>
-              <span className="text-gray-700"> Online görüşme planlama, görüşme kayıtları, görüşme sonrası notlar.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Değerlendirme Sistemi:</strong>
-              <span className="text-gray-700"> Kullanıcılar arası puanlama (1-5 yıldız), yazılı geri bildirim, değerlendirme geçmişi.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Proje Dokümantasyonu:</strong>
-              <span className="text-gray-700"> Proje dosyaları yükleme, versiyon kontrolü, ekip üyelerine erişim yetkilendirme.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• İlerleme Takibi:</strong>
-              <span className="text-gray-700"> Tamamlanan seans sayısı, kazanılan beceriler, proje tamamlama oranları.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Rozet ve Başarı Sistemi:</strong>
-              <span className="text-gray-700"> Belirli hedeflere ulaşan kullanıcılara rozet verme, profil üzerinde gösterme.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Arama ve Filtreleme:</strong>
-              <span className="text-gray-700"> Beceri, bölüm, proje türü, lokasyon bazlı arama ve filtreleme.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Raporlama:</strong>
-              <span className="text-gray-700"> Kullanıcı aktivite raporları, en çok aranan beceriler, proje tamamlama istatistikleri.</span>
-            </div>
-            <div className="p-3 bg-gray-50 rounded-lg">
-              <strong className="text-blue-600">• Bildirim Sistemi:</strong>
-              <span className="text-gray-700"> Yeni eşleşme, mesaj, proje başvurusu, seans hatırlatıcıları için bildirim.</span>
-            </div>
+        {/* 4. İşlevsel Gereksinimler */}
+        <div className="mb-16 page-break">
+          <div className="flex items-center gap-3 mb-6">
+            <Settings className="w-8 h-8 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">4. İşlevsel Gereksinimler</h2>
           </div>
-        </Section>
 
-        {/* 4. Fonksiyonel Olmayan Gereksinimler */}
-        <Section id="nonFunctional" title="4. Fonksiyonel Olmayan Gereksinimler">
-          <div className="space-y-3">
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Güvenlik:</strong> Kullanıcı kimlik doğrulama (OAuth2, JWT), veri şifreleme, rol tabanlı erişim kontrolü, kişisel veri koruma (KVKK uyumlu).
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Performans:</strong> 1000+ eş zamanlı kullanıcı desteği, ana sayfalar <2 sn yüklenmeli, arama sonuçları <1 sn dönmeli.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Ölçeklenebilirlik:</strong> Kullanıcı sayısı artışına uyum sağlayabilir mimari, yatay ölçeklendirme desteği.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Kullanılabilirlik:</strong> Sezgisel kullanıcı arayüzü, mobil uyumlu (responsive) tasarım, erişilebilirlik standartları.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Yedekleme & Kurtarma:</strong> Günlük otomatik yedekleme, 30 günlük yedek saklama, disaster recovery planı.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Entegrasyon:</strong> Üniversite bilgi sistemleri ile entegrasyon, e-posta bildirimleri, takvim uygulamaları ile senkronizasyon.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Çok Dilli Destek:</strong> Türkçe öncelikli, İngilizce destek, ileride diğer diller.
-            </div>
-            <div className="p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
-              <strong>• Denetim:</strong> Tüm önemli işlemler için audit log, kullanıcı aktivite izleme, güvenlik olayları loglama.
-            </div>
+          <div className="space-y-4">
+            {[
+              { title: 'Kullanıcı Kayıtları', desc: 'CRUD işlemleri, profil bilgileri (isim, yaş, bölüm, beceriler, hedefler, deneyim), kimlik doğrulama' },
+              { title: 'Beceri Yönetimi', desc: 'Kullanıcıların sahip oldukları ve öğrenmek istedikleri becerileri tanımlama, beceri seviyesi belirleme, kategoriler' },
+              { title: 'Eşleştirme Algoritması', desc: 'Sahip olunan ve istenen beceriler bazında otomatik eşleştirme, uyumluluk skoru hesaplama' },
+              { title: 'Proje İlanları', desc: 'Proje oluşturma, ekip arkadaşı arama, gereken becerileri tanımlama, başvuru kabul/red sistemi' },
+              { title: 'Mentorluk Sistemi', desc: 'Mentor-öğrenci eşleştirme, mentorluk seansları planlama, seans geçmişi takibi' },
+              { title: 'Mesajlaşma', desc: 'Kullanıcılar arası mesajlaşma, grup mesajları (proje ekipleri için), bildirim sistemi' },
+              { title: 'Görüşme Yönetimi', desc: 'Online görüşme planlama, görüşme kayıtları, görüşme sonrası notlar' },
+              { title: 'Değerlendirme Sistemi', desc: 'Kullanıcılar arası puanlama (1-5 yıldız), yazılı geri bildirim, değerlendirme geçmişi' },
+              { title: 'Proje Dokümantasyonu', desc: 'Proje dosyaları yükleme, versiyon kontrolü, ekip üyelerine erişim yetkilendirme' },
+              { title: 'İlerleme Takibi', desc: 'Tamamlanan seans sayısı, kazanılan beceriler, proje tamamlama oranları' },
+              { title: 'Rozet ve Başarı Sistemi', desc: 'Belirli hedeflere ulaşan kullanıcılara rozet verme, profil üzerinde gösterme' },
+              { title: 'Arama ve Filtreleme', desc: 'Beceri, bölüm, proje türü, lokasyon bazlı arama ve filtreleme özellikleri' },
+              { title: 'Raporlama', desc: 'Kullanıcı aktivite raporları, en çok aranan beceriler, proje tamamlama istatistikleri' },
+              { title: 'Bildirim Sistemi', desc: 'Yeni eşleşme, mesaj, proje başvurusu, seans hatırlatıcıları için bildirim' }
+            ].map((req, idx) => (
+              <div key={idx} className="bg-gray-50 border-l-4 border-blue-500 p-4 rounded">
+                <h3 className="font-bold text-blue-900 mb-1">{req.title}</h3>
+                <p className="text-gray-700 text-sm">{req.desc}</p>
+              </div>
+            ))}
           </div>
-        </Section>
+        </div>
 
-        {/* 5. İş Kuralları */}
-        <Section id="businessRules" title="5. İş Kuralları">
-          <ol className="space-y-2 text-gray-700">
-            <li className="p-2 bg-gray-50 rounded"><strong>1.</strong> Her kullanıcının en az bir becerisi olmalıdır (sahip olunan veya öğrenilmek istenen).</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>2.</strong> Bir kullanıcı birden fazla projede yer alabilir; bir projeye birden fazla kullanıcı katılabilir (M:N).</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>3.</strong> Mentorluk seansları en az bir mentor ve bir öğrenci gerektirir.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>4.</strong> Değerlendirme yalnızca tamamlanmış seans veya proje sonrasında yapılabilir.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>5.</strong> Proje ilanına başvuru yapabilmek için kullanıcının ilgili becerilere sahip olduğunu belirtmesi gerekir.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>6.</strong> Bir kullanıcı kendisini değerlendiremez.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>7.</strong> Mesajlaşma sadece eşleşmiş veya aynı projede olan kullanıcılar arasında yapılabilir.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>8.</strong> Proje sahibi, proje ekibindeki kullanıcıları onaylama veya çıkarma yetkisine sahiptir.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>9.</strong> Etik dışı davranış bildirilen kullanıcılar incelemeye alınır ve gerekirse hesap askıya alınır.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>10.</strong> Silme işlemlerinde soft-delete kullanılır (veri bütünlüğü ve denetim için).</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>11.</strong> Ticari amaçlı kullanım yasaktır, sistem yalnızca eğitim ve gelişim amaçlıdır.</li>
-            <li className="p-2 bg-gray-50 rounded"><strong>12.</strong> Her görüşme öncesi karşılıklı onay gereklidir.</li>
-          </ol>
-        </Section>
-
-        {/* 6. Kavramsal Varlık Listesi */}
-        <Section id="entities" title="6. Kavramsal Varlık Listesi">
-          <div className="space-y-4 text-sm">
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• User (Kullanıcı)</strong>
-              <p className="text-gray-700 mt-1">user_id (PK), email (unique), password_hash, first_name, last_name, birth_date, department, university, bio, profile_picture, registration_date, last_login, status, average_rating</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Skill (Beceri)</strong>
-              <p className="text-gray-700 mt-1">skill_id (PK), skill_name (unique), category, description</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• UserSkill (Kullanıcı Becerisi)</strong>
-              <p className="text-gray-700 mt-1">user_skill_id (PK), user_id (FK), skill_id (FK), skill_type (owned/wanted), proficiency_level (beginner/intermediate/advanced), years_of_experience</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Match (Eşleşme)</strong>
-              <p className="text-gray-700 mt-1">match_id (PK), user1_id (FK), user2_id (FK), match_date, compatibility_score, status (pending/accepted/completed/cancelled), exchange_type (skill_swap/mentorship)</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Session (Seans)</strong>
-              <p className="text-gray-700 mt-1">session_id (PK), match_id (FK), session_date, duration_minutes, topic, notes, status (scheduled/completed/cancelled), meeting_link</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Project (Proje)</strong>
-              <p className="text-gray-700 mt-1">project_id (PK), owner_id (FK->User), title, description, category, required_skills, team_size_limit, start_date, expected_end_date, status (open/in_progress/completed/cancelled), created_at</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• ProjectMember (Proje Üyesi)</strong>
-              <p className="text-gray-700 mt-1">member_id (PK), project_id (FK), user_id (FK), role (owner/member), join_date, status (pending/approved/active/left), contribution_notes</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Message (Mesaj)</strong>
-              <p className="text-gray-700 mt-1">message_id (PK), sender_id (FK->User), receiver_id (FK->User), project_id (FK, nullable), content, sent_at, read_at, message_type (direct/group)</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Review (Değerlendirme)</strong>
-              <p className="text-gray-700 mt-1">review_id (PK), reviewer_id (FK->User), reviewee_id (FK->User), session_id (FK, nullable), project_id (FK, nullable), rating (1-5), comment, review_date, review_type (session/project)</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Document (Doküman)</strong>
-              <p className="text-gray-700 mt-1">document_id (PK), project_id (FK), uploaded_by (FK->User), file_name, file_path, file_type, file_size, upload_date, version, description</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Badge (Rozet)</strong>
-              <p className="text-gray-700 mt-1">badge_id (PK), badge_name, description, icon, criteria, badge_type (skill/participation/achievement)</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• UserBadge (Kullanıcı Rozeti)</strong>
-              <p className="text-gray-700 mt-1">user_badge_id (PK), user_id (FK), badge_id (FK), earned_date</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Notification (Bildirim)</strong>
-              <p className="text-gray-700 mt-1">notification_id (PK), user_id (FK), notification_type, content, related_id, created_at, read_at, is_read</p>
-            </div>
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <strong className="text-blue-700">• Report (Şikayet)</strong>
-              <p className="text-gray-700 mt-1">report_id (PK), reporter_id (FK->User), reported_user_id (FK->User), reason, description, report_date, status (pending/reviewed/resolved), reviewed_by (FK->User)</p>
-            </div>
-          </div>
-        </Section>
-
-        {/* 7. İlişkiler ve Kardinaliteler */}
-        <Section id="relationships" title="7. İlişkiler ve Kardinaliteler">
-          <div className="space-y-2 text-gray-700 text-sm">
-            <p>• User (1) — (0..*) UserSkill : Bir kullanıcının birden fazla becerisi olabilir</p>
-            <p>• Skill (1) — (0..*) UserSkill : Bir beceri birçok kullanıcı tarafından sahiplenebilir</p>
-            <p>• User (1) — (0..*) Match (user1) : Kullanıcı birçok eşleşmeye sahip olabilir</p>
-            <p>• User (1) — (0..*) Match (user2) : Kullanıcı birçok eşleşmeye sahip olabilir</p>
-            <p>• Match (1) — (0..*) Session : Bir eşleşmenin birden fazla seansı olabilir</p>
-            <p>• User (1) — (0..*) Project (owner) : Bir kullanıcı birden fazla proje oluşturabilir</p>
-            <p>• Project (1) — (0..*) ProjectMember : Bir projede birçok üye olabilir</p>
-            <p>• User (1) — (0..*) ProjectMember : Bir kullanıcı birçok projeye katılabilir</p>
-            <p>• User (1) — (0..*) Message (sender) : Bir kullanıcı birçok mesaj gönderebilir</p>
-            <p>• User (1) — (0..*) Message (receiver) : Bir kullanıcı birçok mesaj alabilir</p>
-            <p>• Project (1) — (0..*) Message : Bir projenin grup mesajları olabilir</p>
-            <p>• User (1) — (0..*) Review (reviewer) : Bir kullanıcı birçok değerlendirme yapabilir</p>
-            <p>• User (1) — (0..*) Review (reviewee) : Bir kullanıcı birçok değerlendirme alabilir</p>
-            <p>• Session (1) — (0..*) Review : Bir seans için değerlendirme yapılabilir</p>
-            <p>• Project (1) — (0..*) Review : Bir proje için değerlendirme yapılabilir</p>
-            <p>• Project (1) — (0..*) Document : Bir projenin birçok dokümanı olabilir</p>
-            <p>• User (1) — (0..*) UserBadge : Bir kullanıcı birçok rozet kazanabilir</p>
-            <p>• Badge (1) — (0..*) UserBadge : Bir rozet birçok kullanıcı tarafından kazanılabilir</p>
-            <p>• User (1) — (0..*) Notification : Bir kullanıcının birçok bildirimi olabilir</p>
-            <p>• User (1) — (0..*) Report (reporter) : Bir kullanıcı birçok şikayet yapabilir</p>
-            <p>• User (1) — (0..*) Report (reported_user) : Bir kullanıcı hakkında birçok şikayet olabilir</p>
-          </div>
-        </Section>
-
-        {/* 8. Kullanıcı Senaryoları */}
-        <Section id="scenarios" title="8. Kullanıcı Senaryoları">
-          <div className="space-y-6">
-            <div className="p-5 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-l-4 border-purple-500">
-              <h3 className="font-bold text-purple-700 mb-3">Senaryo 1: Beceri Takası</h3>
-              <div className="space-y-2 text-gray-700">
-                <p><strong>Kullanıcı:</strong> Ayşe - Bilgisayar Mühendisliği öğrencisi</p>
-                <p><strong>Sahip Olduğu Beceri:</strong> Python programlama (İleri seviye)</p>
-                <p><strong>Öğrenmek İstediği Beceri:</strong> Sunum yapma becerileri</p>
-                <p className="mt-3"><strong>Akış:</strong></p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li>Ayşe sisteme kaydolur ve profilinde Python becerisini "sahip olunan" olarak, sunum becerisini "öğrenilmek istenen" olarak işaretler.</li>
-                  <li>Sistem, sunum becerilerine sahip ve Python öğrenmek isteyen Mehmet (İşletme öğrencisi) ile Ayşe'yi eşleştirir.</li>
-                  <li>Her iki kullanıcı da eşleşmeyi onaylar.</li>
-                  <li>Ayşe ve Mehmet mesajlaşarak haftalık seans programı oluştururlar.</li>
-                  <li>Ayşe, Mehmet'e Python temellerini ve proje geliştirmeyi öğretir.</li>
-                  <li>Mehmet, Ayşe'ye sunum teknikleri, beden dili ve etkili iletişim konularında mentorluk yapar.</li>
-                  <li>Her seans sonunda notlar kaydedilir.</li>
-                  <li>Tüm seanslar tamamlandığında her iki taraf da birbirini değerlendirir (puan ve yorum).</li>
-                  <li>Her iki kullanıcı da "İlk Başarılı Takas" rozetini kazanır.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border-l-4 border-blue-500">
-              <h3 className="font-bold text-blue-700 mb-3">Senaryo 2: Mentorluk Sistemi</h3>
-              <div className="space-y-2 text-gray-700">
-                <p><strong>Kullanıcı:</strong> Elif - İngilizce eğitimi almış öğrenci</p>
-                <p><strong>Sahip Olduğu Beceri:</strong> İngilizce (İleri seviye)</p>
-                <p><strong>Öğrenmek İstediği Beceri:</strong> Proje yönetimi</p>
-                <p className="mt-3"><strong>Akış:</strong></p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li>Elif profilinde İngilizce becerisini ekler ve "mentorluk yapmaya açık" seçeneğini işaretler.</li>
-                  <li>İngilizce konuşma pratiği yapmak isteyen Ali, sistemde İngilizce mentorları arar.</li>
-                  <li>Ali, Elif'in profilini görür ve mentorluk talebi gönderir.</li>
-                  <li>Elif talebi kabul eder ve mentorluk eşleşmesi oluşur.</li>
-                  <li>Mentorluk seansları için haftalık görüşmeler planlanır.</li>
-                  <li>Elif, Ali ile düzenli olarak İngilizce konuşma pratiği yapar.</li>
-                  <li>Paralel olarak, Elif'in proje yönetimi öğrenme isteği sisteme kaydedilir.</li>
-                  <li>Sistem, proje yönetimi becerisine sahip Zeynep ile Elif'i eşleştirir.</li>
-                  <li>Zeynep, Elif'e proje planlama, zaman yönetimi ve ekip koordinasyonu konularında rehberlik eder.</li>
-                  <li>Tüm mentorluk süreçleri tamamlandığında karşılıklı değerlendirmeler yapılır.</li>
-                  <li>Elif "Aktif Mentor" rozetini kazanır.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-l-4 border-green-500">
-              <h3 className="font-bold text-green-700 mb-3">Senaryo 3: Proje İlanı ve Ekip Oluşturma</h3>
-              <div className="space-y-2 text-gray-700">
-                <p><strong>Kullanıcı:</strong> Burak - Yazılım geliştirme fikri olan öğrenci</p>
-                <p><strong>Proje:</strong> Mobil uygulama geliştirme</p>
-                <p><strong>İhtiyaç:</strong> UI/UX tasarımcı ve backend developer</p>
-                <p className="mt-3"><strong>Akış:</strong></p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li>Burak sisteme "Mobil Uygulama Projesi" başlığıyla proje ilanı oluşturur.</li>
-                  <li>Proje açıklamasında: hedef, süre (3 ay), gereken beceriler (UI/UX Design, Backend Development) belirtilir.</li>
-                  <li>İlan yayınlanır ve tüm kullanıcılar tarafından görülebilir hale gelir.</li>
-                  <li>UI/UX tasarımında deneyimli Selin, ilan üzerinden başvuru yapar ve portfolyosunu paylaşır.</li>
-                  <li>Backend geliştirme becerisine sahip Cem de başvuru yapar.</li>
-                  <li>Burak, başvuruları inceler ve her iki kullanıcıyı da projeye kabul eder.</li>
-                  <li>Proje ekibi oluşturulur ve grup mesajlaşma aktif olur.</li>
-                  <li>Ekip, proje planı oluşturur ve görev dağılımı yapar.</li>
-                  <li>Proje dokümanları (tasarım dosyaları, kod, raporlar) sisteme yüklenir.</li>
-                  <li>Proje süresi boyunca ekip düzenli olarak görüşür ve ilerleme kaydedilir.</li>
-                  <li>Proje tamamlandığında "completed" statüsüne alınır.</li>
-                  <li>Ekip üyeleri birbirini değerlendirir (iş birliği, katkı, iletişim açısından).</li>
-                  <li>Başarıyla tamamlanan proje için tüm ekip "Proje Tamamlayıcı" rozetini kazanır.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-orange-50 to-amber-50 rounded-lg border-l-4 border-orange-500">
-              <h3 className="font-bold text-orange-700 mb-3">Senaryo 4: Çoklu Beceri Geliştirme ve İlerleme Takibi</h3>
-              <div className="space-y-2 text-gray-700">
-                <p><strong>Kullanıcı:</strong> Deniz - Çok yönlü gelişim hedefleyen öğrenci</p>
-                <p><strong>Hedef:</strong> Web geliştirme, grafik tasarım ve dijital pazarlama öğrenmek</p>
-                <p className="mt-3"><strong>Akış:</strong></p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li>Deniz profilinde öğrenmek istediği 3 farklı beceriyi ekler.</li>
-                  <li>Sistem, her beceri için uygun mentorlar önerir.</li>
-                  <li>Deniz, web geliştirme için Can, grafik tasarım için Aylin, dijital pazarlama için Berk ile eşleşir.</li>
-                  <li>Her mentor ile haftalık seans programları oluşturulur.</li>
-                  <li>Deniz'in profil sayfasında ilerleme çubuğu görünür (tamamlanan seans sayısı, kazanılan beceri seviyeleri).</li>
-                  <li>İlk 5 seans sonunda "Aktif Öğrenci" rozeti kazanır.</li>
-                  <li>Web geliştirme becerisinde "beginner" seviyesinden "intermediate" seviyesine yükselir.</li>
-                  <li>Deniz, öğrendiği becerileri birleştirerek kendi web sitesi projesini başlatır.</li>
-                  <li>Sistem, Deniz'in gelişimini otomatik olarak takip eder ve aylık rapor oluşturur.</li>
-                  <li>Deniz, mentorlarını değerlendirir ve teşekkür mesajları gönderir.</li>
-                  <li>6 ay sonunda "Çok Yönlü Gelişim" rozeti kazanır.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-red-50 to-rose-50 rounded-lg border-l-4 border-red-500">
-              <h3 className="font-bold text-red-700 mb-3">Senaryo 5: Sorun Çözme ve Moderasyon</h3>
-              <div className="space-y-2 text-gray-700">
-                <p><strong>Durum:</strong> Etik dışı davranış bildirimi</p>
-                <p className="mt-3"><strong>Akış:</strong></p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li>Kullanıcı Fatma, mentorluk seansında kendisine saygısız davranan kullanıcı Ahmet hakkında şikayet oluşturur.</li>
-                  <li>Fatma, "Report" özelliğini kullanarak durumu detaylı bir şekilde açıklar.</li>
-                  <li>Sistem otomatik olarak şikayeti "pending" statüsüne alır ve moderatörlere bildirim gönderir.</li>
-                  <li>Moderatör, şikayeti inceler, mesaj geçmişini ve seans kayıtlarını kontrol eder.</li>
-                  <li>Ahmet'in daha önceki değerlendirmeleri de incelenir.</li>
-                  <li>Şikayet geçerli bulunursa, Ahmet'e uyarı verilir ve hesabı geçici olarak askıya alınır.</li>
-                  <li>Ahmet'e davranış kurallarını hatırlatan bir bildirim gönderilir.</li>
-                  <li>Fatma'ya durum hakkında bilgi verilir ve sistem tarafından desteklendiği belirtilir.</li>
-                  <li>Şikayet kaydı "resolved" statüsüne güncellenir ve arşivlenir.</li>
-                  <li>Eğer Ahmet davranışını düzeltir ve olumlu geri bildirimler alırsa, askı kaldırılır.</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </Section>
-
-        {/* 9. ER Diyagram */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-8 border-t-4 border-indigo-600">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="text-indigo-600">9.</span> Kavramsal ER Diyagram
+        {/* 5. Fonksiyonel Olmayan Gereksinimler */}
+        <div className="mb-16 page-break">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-600 pb-3">
+            5. Fonksiyonel Olmayan Gereksinimler
           </h2>
-          <div className="bg-gray-100 rounded-lg p-8 text-center">
-            <div className="text-gray-600 mb-4">
-              <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-              </svg>
-              <p className="font-semibold text-lg">ER Diyagram Şeması</p>
-            </div>
-            <div className="text-sm text-gray-600 space-y-2">
-              <p>Ana varlıklar: User, Skill, Match, Session, Project, Review, Badge</p>
-              <p>İlişkiler: M:N beceri eşleştirmeleri, 1:N proje üyelikleri, karşılıklı değerlendirmeler</p>
-              <p className="mt-4 text-xs italic">Detaylı ER diyagramı veritabanı tasarımı aşamasında oluşturulacaktır</p>
-            </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            {[
+              { title: 'Güvenlik', content: 'Kullanıcı kimlik doğrulama (OAuth2, JWT), veri şifreleme, rol tabanlı erişim kontrolü, kişisel veri koruma (KVKK uyumlu)', color: 'red' },
+              { title: 'Performans', content: '1000+ eş zamanlı kullanıcı desteği, ana sayfalar <2 sn yüklenmeli, arama sonuçları <1 sn dönmeli', color: 'green' },
+              { title: 'Ölçeklenebilirlik', content: 'Kullanıcı sayısı artışına uyum sağlayabilir mimari, yatay ölçeklendirme desteği', color: 'blue' },
+              { title: 'Kullanılabilirlik', content: 'Sezgisel kullanıcı arayüzü, mobil uyumlu (responsive) tasarım, erişilebilirlik standartları', color: 'purple' },
+              { title: 'Yedekleme & Kurtarma', content: 'Günlük otomatik yedekleme, 30 günlük yedek saklama, disaster recovery planı', color: 'yellow' },
+              { title: 'Entegrasyon', content: 'Üniversite bilgi sistemleri ile entegrasyon, e-posta bildirimleri, takvim senkronizasyonu', color: 'indigo' },
+              { title: 'Çok Dilli Destek', content: 'Türkçe öncelikli, İngilizce destek, ileride diğer diller', color: 'pink' },
+              { title: 'Denetim', content: 'Tüm önemli işlemler için audit log, kullanıcı aktivite izleme, güvenlik olayları loglama', color: 'gray' }
+            ].map((req, idx) => (
+              <div key={idx} className={`bg-${req.color}-50 border-l-4 border-${req.color}-500 p-4 rounded`}>
+                <h3 className={`font-bold text-${req.color}-900 mb-2`}>{req.title}</h3>
+                <p className="text-gray-700 text-sm">{req.content}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Footer - Ekip Bilgileri */}
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-xl shadow-lg p-6 text-white">
-          <h3 className="text-xl font-bold mb-3">Proje Ekibi</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold">EC</div>
-              <p className="text-sm font-semibold">Emircan Can</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold">MY</div>
-              <p className="text-sm font-semibold">Melike Yetmen</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold">MT</div>
-              <p className="text-sm font-semibold">Muhammet Temel</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-white rounded-full mx-auto mb-2 flex items-center justify-center text-indigo-600 font-bold">PA</div>
-              <p className="text-sm font-semibold">Pelin Ateş</p>
-            </div>
+        {/* 6. İş Kuralları */}
+        <div className="mb-16 page-break">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900 border-b-2 border-blue-600 pb-3">6. İş Kuralları</h2>
+          
+          <div className="space-y-3">
+            {[
+              'Her kullanıcının en az bir becerisi olmalıdır (sahip olunan veya öğrenilmek istenen).',
+              'Bir kullanıcı birden fazla projede yer alabilir; bir projeye birden fazla kullanıcı katılabilir (M:N).',
+              'Mentorluk seansları en az bir mentor ve bir öğrenci gerektirir.',
+              'Değerlendirme yalnızca tamamlanmış seans veya proje sonrasında yapılabilir.',
+              'Proje ilanına başvuru yapabilmek için kullanıcının ilgili becerilere sahip olduğunu belirtmesi gerekir.',
+              'Bir kullanıcı kendisini değerlendiremez.',
+              'Mesajlaşma sadece eşleşmiş veya aynı projede olan kullanıcılar arasında yapılabilir.',
+              'Proje sahibi, proje ekibindeki kullanıcıları onaylama veya çıkarma yetkisine sahiptir.',
+              'Etik dışı davranış bildirilen kullanıcılar incelemeye alınır ve gerekirse hesap askıya alınır.',
+              'Silme işlemlerinde soft-delete kullanılır (veri bütünlüğü ve denetim için).',
+              'Ticari amaçlı kullanım yasaktır, sistem yalnızca eğitim ve gelişim amaçlıdır.',
+              'Her görüşme öncesi karşılıklı onay gereklidir.'
+            ].map((rule, idx) => (
+              <div key={idx} className="flex items-start gap-3 bg-gray-50 p-4 rounded">
+                <span className="font-bold text-blue-600 text-lg">{idx + 1}.</span>
+                <span className="text-gray-700">{rule}</span>
+              </div>
+            ))}
           </div>
-          <p className="text-center text-sm mt-4 opacity-90">© 2025 Öğrenci Takas Sistemi - Tüm hakları saklıdır</p>
         </div>
-      </div>
-    </div>
-  );
-};
 
-export default StudentExchangeSystemPDF;bana burayi pdf sekldie getir
+        {/* 7. Kavramsal Varlık Listesi */}
+        <div className="mb-16 page-break">
+          <div className="flex items-center gap-3 mb-6">
+            <Database className="w-8 h-8 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">7. Kavramsal Varlık Listesi</h2>
+          </div>
+          <p className="text-gray-600 mb-6 italic">PK = Primary Key, FK = Foreign Key</p>
+
+          <div className="space-y-4">
+            {[
+              { name: 'User (Kullanıcı)', fields: 'user_id (PK), email (unique), password_hash, first_name, last_name, birth_date, department, university, bio, profile_picture, registration_date, last_login, status, average_rating' },
+              { name: 'Skill (Beceri)', fields: 'skill_id (PK), skill_name (unique), category, description' },
+              { name: 'UserSkill (Kullanıcı Becerisi)', fields: 'user_skill_id (PK), user_id (FK), skill_id (FK), skill_type (owned/wanted), proficiency_level (beginner/intermediate/advanced), years_of_experience' },
+              { name: 'Match (Eşleşme)', fields: 'match_id (PK), user1_id (FK), user2_id (FK), match_date, compatibility_score, status (pending/accepted/completed/cancelled), exchange_type (skill_swap/mentorship)' },
+              { name: 'Session (Seans)', fields: 'session_id (PK), match_id (FK), session_date, duration_minutes, topic, notes, status (scheduled/completed/cancelled), meeting_link' },
+              { name: 'Project (Proje)', fields: 'project_id (PK), owner_id (FK->User), title, description, category, required_skills, team_size_limit, start_date, expected_end_date, status (open/in_progress/completed/cancelled), created_at' },
+              { name: 'ProjectMember (Proje Üyesi)', fields: 'member_id (PK), project_id (FK), user_id (FK), role (owner/member), join_date, status (pending/approved/active/left), contribution_notes' },
+              { name: 'Message (Mesaj)', fields: 'message_id (PK), sender_id (FK->User), receiver_id (FK->User), project_id (FK, nullable), content, sent_at, read_at, message_type (direct/group)' },
+              { name: 'Review (Değerlendirme)', fields: 'review_id (PK), reviewer_id (FK->User), reviewee_id (FK->User), session_id (FK, nullable), project_id (FK, nullable), rating (1-5), comment, review_date, review_type (session/project)' },
+              { name: 'Document (Doküman)', fields: 'document_id (PK), project_id (FK), uploaded_by (FK->User), file_name, file_path, file_type, file_size, upload_date, version, description' },
+              { name: 'Badge (Rozet)', fields: 'badge_id (PK), badge_name, description, icon, criteria, badge_type (skill/participation/achievement)' },
+              { name: 'UserBadge (Kullanıcı Rozeti)', fields: 'user_badge_id (PK), user_id (FK), badge_id (FK), earned_date' },
+              { name: 'Notification (Bildirim)', fields: 'notification_id (PK), user_id (FK), notification_type, content, related_id, created_at, read_at, is_read' },
+              {
